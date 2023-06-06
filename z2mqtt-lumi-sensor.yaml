@@ -1,0 +1,78 @@
+blueprint:
+  name: Xiaomi MiJia wireless switch (WXKG01LM) Zigbee2MQTT
+  description: one, two, three, four and many press commands, plus hold
+  domain: automation
+  input:
+    remote:
+      name: Remote
+      description: The action entity of your remote
+      selector:
+        entity:
+          domain: sensor
+    onepress:
+      name: one press
+      description: Action to run on one press
+      default: []
+      selector:
+        action: {}
+    twopress:
+      name: two presses
+      description: Action to run on two presses
+      default: []
+      selector:
+        action: {}
+    threepress:
+      name: three presses
+      description: Action to run on three presses
+      default: []
+      selector:
+        action: {}
+    fourpress:
+      name: four presses
+      description: Action to run on four presses
+      default: []
+      selector:
+        action: {}
+    manypress:
+      name: many presses
+      description: Action to run on many (5+) presses
+      default: []
+      selector:
+        action: {}
+    hold:
+      name: hold
+      description: Action to run when holding
+      default: []
+      selector:
+        action: {}
+      
+  source_url: https://raw.githubusercontent.com/bvdberg01/Z2M-Styrbar-remote-blueprint/main/xiaomi-mijia-round-wireless-switch-wxkg01lm.yaml
+trigger:
+  - platform: state
+    entity_id: !input 'remote'
+    attribute: action
+condition: []
+action:
+  - variables:
+      command: '{{ trigger.to_state.state }}'
+  - choose:      
+      - conditions:
+          - '{{ command == ''single'' }}'
+        sequence: !input 'onepress'
+      - conditions:
+          - '{{ command == ''double'' }}'
+        sequence: !input 'twopress'    
+      - conditions:
+          - '{{ command == ''triple'' }}'
+        sequence: !input 'threepress'
+      - conditions:
+          - '{{ command == ''quadruple'' }}'
+        sequence: !input 'fourpress'
+      - conditions:
+          - '{{ command == ''many'' }}'
+        sequence: !input 'manypress'
+      - conditions:
+          - '{{ command == ''hold'' }}'
+        sequence: !input 'hold'
+mode: parallel
+max_exceeded: silent
