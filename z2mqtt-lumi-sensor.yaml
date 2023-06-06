@@ -50,11 +50,10 @@ blueprint:
 trigger:
   - platform: state
     entity_id: !input 'remote'
-    attribute: action
 condition: []
 action:
   - variables:
-      command: '{{ trigger }}'
+      command: '{{ trigger.to_state.state }}'
   - choose:      
       - conditions:
           - '{{ command == ''single'' }}'
