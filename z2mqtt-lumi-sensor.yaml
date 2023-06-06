@@ -54,7 +54,7 @@ trigger:
 condition: []
 action:
   - variables:
-      command: '{{ trigger.to_state.state }}'
+      command: '{{ trigger.state }}'
   - choose:      
       - conditions:
           - '{{ command == ''single'' }}'
